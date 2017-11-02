@@ -1,0 +1,76 @@
+﻿Combinators
+1 Combinator
+2 Not a combinator
+3 Combinator
+4 Combinator
+5 Not a combinator
+
+Normal form or diverge?
+1 Normal form
+2 Diverge
+3 Normal form
+
+Beta reduce
+1 (λabc.cba)zz(λwv.w)
+  (λa.λb.λc.cba)zz(λwv.w)
+  [a := z]
+  (λb.λc.cbz)z(λwv.w)
+  [b := z]
+  (λc.czz)(λwv.w)
+  [c := (λwv.w)]
+  (λwv.w)zz
+  z
+
+2 (λx.λy.xyy)(λa.a)b
+  [x := (λa.a)]
+  (λy.(λa.a)yy)b
+  (λa.a)bb
+  bb
+
+3 (λy.y)(λx.xx)(λz.zq)
+  [y := (λx.xx)]
+  (λx.xx)(λz.zq)
+  [x := (λz.zq)]
+  (λz.zq)(λz.zq)
+  [z := (λz.zq)]
+  (λz.zq)q
+  [z := q]
+  qq
+
+4 (λz.z)(λz.zz)(λz.zy)
+  [z := (λz.zz)]
+  (λz.zz)(λz.zy)
+  [z := (λz.zy)]
+  (λz.zy)(λz.zy)
+  [z := (λz.zy)]
+  (λz.zy)y
+  [z := y]
+  yy
+
+5 (λx.λy.xyy)(λy.y)y
+  [x := (λy.y)]
+  (λy.(λy.y)yy)y
+  [y := y]
+  (λy.y)yy
+  [y := y]
+  yy
+
+6 (λa.aa)(λb.ba)c
+  [a := (λb.ba)]
+  (λb.ba)(λb.ba)c
+  [b := (λb.ba)]
+  (λb.ba)ac
+  [b := a]
+  aac
+
+7 (λxyz.xz(yz))(λx.z)(λx.a)
+  (λx.y.z.xz(yz))(λx.z)(λx.a)
+  (λx.y.z1.xz1(yz1))(λx.z)(λx.a)
+  [x := (λx.z)]
+  (λy.z1.(λx.z)z1(yz1))(λx.a)
+  [y := (λx.a)]
+  (λz1.(x.z)z1((λx.a)z1))
+  [x := z1]
+  (λz1.z((λx.a)z1))
+  [x := z1]
+  (λz1.z(a))

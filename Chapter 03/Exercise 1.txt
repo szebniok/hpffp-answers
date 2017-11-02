@@ -1,0 +1,4 @@
+1. y is in scope
+2. h is not in scope
+3. d is not in the scope for r
+4. r and d are in scope for area
