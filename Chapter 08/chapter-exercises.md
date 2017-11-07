@@ -89,6 +89,34 @@ frappe :: String -> String
 Recursion
 ---------
 1. Write out the steps for reducing `dividedBy 15 2` to its final answer according to the Haskell code.
+   ```haskell
+   dividedBy 15 2 =
+   go 15 2 0
+   
+     go (15 - 2) 2 (0 + 1)
+     go 13 2 1
+     
+       go (13 - 2) 2 (1 + 1)
+       go 11 2 2
+       
+         go (11 - 2) 2 (2 + 1)
+         go 9 2 3
+         
+           go (9 - 2) 2 (3 + 1)
+           go 7 2 4
+           
+             go (7 - 2) 2 (4 + 1)
+             go 5 2 5
+             
+               go (5 - 2) 2 (5 + 1)
+               go 3 2 6
+               
+                 go (3 - 2) 2 (6 + 1)
+                 go 1 2 7
+                 
+                   (7, 1)
+   (7, 1)
+   ```
 2. Write a function that recursively sums all numbers from 1 to n, n being the argument. So that if n was 5, you’d add
    1 + 2 + 3 + 4 + 5 to get 15. The type should be `(Eq a, Num a) => a -> a`.
 
@@ -126,12 +154,17 @@ Prelude> div (-10) (2)
 -5
 ```
 The next issue is how to handle zero. Zero is undefined for division in math, so really we ought to use a datatype that lets us
-say there was no sensible result when the user divides by zero. If you need inspiration, consider using the following
-datatype to handle this.
+say there was no sensible result when the user divides by zero.
+
 ```haskell
-data DividedResult =
-    Result Integer
-  | DividedByZero
+dividedBy :: Integral a => a -> a -> Maybe (a, a)
+dividedBy num denom = go num denom 0
+  where go n d count
+         | d == 0 = Nothing
+         | d < 0 = let Just (num, denom) = go n (negate d) count in Just (-num, denom)
+         | n < 0 = let Just (num, denom) = go (negate n) d count in Just (-num, denom)
+         | n < d = Just (count, n)
+         | otherwise = go (n - d) d (count + 1)
 ```
 
 McCarthy 91 function
@@ -203,4 +236,28 @@ Here is what your output should look in the REPL when it’s working:
 Prelude> wordNumber 12324546
 "one-two-three-two-four-five-four-six"
 Prelude>
+```
+
+```haskell
+
+digitToWord :: Int -> String
+digitToWord 0 = "zero"
+digitToWord 1 = "one"
+digitToWord 2 = "two"
+digitToWord 3 = "three"
+digitToWord 4 = "four"
+digitToWord 5 = "five"
+digitToWord 6 = "six"
+digitToWord 7 = "seven"
+digitToWord 8 = "eight"
+digitToWord 9 = "nine"
+
+digits :: Int -> [Int]
+digits n = go n []
+  where go n acc 
+         | n < 10 = [n] ++ acc
+         | otherwise = go (n `div` 10) ([n `mod` 10] ++ acc)
+
+wordNumber :: Int -> String
+wordNumber n = concat (intersperse "-" (map digitToWord (digits n)))
 ```
